@@ -54,7 +54,7 @@ public class NewsController extends Task<Void> {
 
     private int categoryIndex, progress = 0, maxProgress; // Index to read from the arrays below
     private String error = ""; // Error message
-    
+    //test
     private NewsController() {}
 
     public static NewsController getInstance() {
