@@ -344,9 +344,13 @@ public class NewsController extends Task<Void> {
 
                             in.close();
                         }
+                        // Catch exceptions during runtime
+                        // Invalid URL
                         catch (MalformedURLException e) {
                             e.printStackTrace();
-                        } catch (IOException e) {
+                        }
+                        // Unable to connect to URL
+                        catch (IOException e) {
                             System.out.println("Can't connect to " + urlAddress);
                             error += urlAddress + ": " + e.getMessage() + "\n";
                         }
