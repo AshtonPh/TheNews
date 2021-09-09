@@ -57,8 +57,10 @@ public class NewsController extends Task<Void> {
     //test
     private NewsController() {}
 
+    // Get a new instance of NewsController
     public static NewsController getInstance() {
         if (newsController == null) {
+            // Synchronized prevents thread interference and memory consistency errors
             synchronized (NewsController.class) {
                 if (newsController == null)
                     newsController = new NewsController();
@@ -84,6 +86,7 @@ public class NewsController extends Task<Void> {
         return this.error;
     }
 
+    // Index each category for identification
     public void setCategoryIndex(int categoryIndex) {
         this.categoryIndex = categoryIndex;
 
@@ -95,6 +98,7 @@ public class NewsController extends Task<Void> {
         }
     }
 
+    // Initiate the program and sort tems according to time posted
     public void start() {
         long start = System.currentTimeMillis();
         items.clear();
@@ -119,6 +123,7 @@ public class NewsController extends Task<Void> {
         Collections.sort(items);
         updateProgress(1, 1);
 
+        // Output to console information regarding memory consumed and the time it takes for an item to be achieved
         System.gc();
         System.out.println(Math.round((double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / Math.pow(1024, 2)) + " MB");
         System.out.println("Achieve " + items.size() + " items: " + (System.currentTimeMillis() - start) + " ms\n");
@@ -193,15 +198,19 @@ public class NewsController extends Task<Void> {
 
                             in.close();
                         }
+                        // Catch exceptions during runtime
+                        // Invalid URL
                         catch (MalformedURLException e) {
                             e.printStackTrace();
                         }
+                        // Unable to connect to URL
                         catch (IOException e) {
                             System.out.println("Can't connect to " + urlAddress);
                             error += urlAddress + ": " + e.getMessage() + "\n";
                         }
                     }
                     else {
+                        // Return status code
                         Connection.Response response = Jsoup.connect(urlAddress).timeout(10000).execute();
                         if (response.statusCode() >= 400) throw new IOException("Status code: " + response.statusCode());
 
@@ -276,6 +285,7 @@ public class NewsController extends Task<Void> {
         }
     }
 
+    // Scraping function for TuoiTre news outlet
     private void scrapeTuoiTre(List<String> links) {
         for (String urlAddress : links) {
             pool.execute(() -> {
